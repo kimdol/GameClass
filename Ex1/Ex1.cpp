@@ -10,5 +10,7 @@ int main()
 
     std::cout << "입력하신 숫자는";
     std::cout << num;
-    std::cout << "입니다";
+    std::cout << "입니다" << std::endl;
+
+    std::cout << "아싸 성공";
 }
