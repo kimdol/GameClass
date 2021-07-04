@@ -13,3 +13,4 @@ _deps
 /.vs
 ./*/.vs
 ./*/Debug/
+./*/x64/Debug/
