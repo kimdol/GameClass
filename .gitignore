@@ -10,4 +10,6 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 .vs/
-./Ex1/.vs/
+/.vs
+./*/.vs
+./*/debug/
