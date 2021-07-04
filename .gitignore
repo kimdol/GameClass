@@ -11,6 +11,4 @@ CTestTestfile.cmake
 _deps
 .vs/
 /.vs
-./*/.vs
-./*/Debug/
-./*/x64/Debug/
+Debug/
