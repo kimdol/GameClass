@@ -12,4 +12,9 @@ int main()
 
     x = myInteger;  // l-value, r-value
 
+    char myChar;
+    myChar = 'A';
+
+    std::cout << myChar;
+
 }
