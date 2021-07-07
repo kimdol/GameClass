@@ -21,6 +21,8 @@ int main()
 	std::cout << number << std::endl;
 
 	// 여기서 알수있는 부분은 곱하기 2가 된다는 것이다.
+	// 이러한 비트연산자는 RGB에 씀
+	// RGB + 알파(투명도) = 4byte
+
 
 }
-
