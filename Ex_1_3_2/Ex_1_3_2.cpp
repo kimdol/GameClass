@@ -7,12 +7,20 @@ int main()
 	//std::cout << number1 + number2 << std::endl;
 	//std::cout << number1 % number2 << std::endl;
 
-	int number = 0b0010;
+	int number = 0b0001;
 
-	//number = number >> 1; // 0001로 밀림
-	number = number << 2;
-
+	// number = number >> 1; // 0001로 밀림
+	
+	number = number << 1;
 	std::cout << number << std::endl;
+
+	number = number << 1;
+	std::cout << number << std::endl;
+
+	number = number << 1;
+	std::cout << number << std::endl;
+
+	// 여기서 알수있는 부분은 곱하기 2가 된다는 것이다.
 
 }
 
