@@ -16,7 +16,7 @@ int main()
     int inputNum;
     float usdMoney, krwMoney;
     std::string evenOdd;
-    const float exchangeRate{ 1146.57f };   // 유니폼 초기화 할 때, 리터럴을 꼬옥! 써줘야한다.
+    const float EXCHANGERATE{ 1146.57f };   // 유니폼 초기화 할 때, 리터럴을 꼬옥! 써줘야한다.
 
     std::cout << "홀수 짝수 구별 할 숫자를 입력하시오. ";
     std::cin >> inputNum;
@@ -28,7 +28,7 @@ int main()
     std::cout << "KRW로 바꿀 USD를 입력하시오. ";
     std::cin >> usdMoney;
 
-    krwMoney = usdMoney * exchangeRate;
+    krwMoney = usdMoney * EXCHANGERATE;
     std::cout << "결과는 " << krwMoney << "원 입니다." << std::endl;
 
 
