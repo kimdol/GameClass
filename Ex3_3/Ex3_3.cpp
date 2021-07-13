@@ -32,7 +32,7 @@ int main()
     }*/
 
     /* 문자열을 입력받아서, 이전 단어와 같은지 확인하라 */
-    {
+   /* {
         std::string previous = " ";
         std::string current{ };
         int cnt{ 0 };
@@ -51,8 +51,19 @@ int main()
             previous = current;
         }
 
-    }
+    }*/
 
+    /* 최초의 프로그램 제곱 (0~99) */
+    {
+        int operand{ 0 }, result{ 0 };
+
+        while (operand <= 99)
+        {
+            result = operand * operand;
+            std::cout << operand << "    " << result << std::endl;
+            operand++;
+        }
+    }
 
     return 0;
 
