@@ -2,18 +2,6 @@
 
 int main()
 {
-
-    /* {
-        int i = 5;
-
-        for (int i = 1; i < 10; i++)
-        {
-            std::cout << "\n";
-        }
-        std::cout << i << std::endl;
-    }
-
-    */
     /* 1-1번 문제 */
     /*{
         for (int n = 1; n <= 5; n++)
@@ -152,5 +140,6 @@ int main()
             std::cout << "\n";
         }
     }
+
 
 }
