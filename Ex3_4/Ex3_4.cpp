@@ -127,13 +127,17 @@ int main()
     */
     /* 2-11번 문제 */
     {
-        for (int i = 4; i >= 0; i--)
+        int height{ 0 };
+        std::cout << "삼각형 높이 : ";
+        std::cin >> height;
+
+        for (int i = (height-1); i >= 0; i--)
         {
             for (int j = 1; j <= i; j++)
             {
                 std::cout << " ";
             }
-            for (int k = 0; k < 5-i; k++)
+            for (int k = 0; k < height-i; k++)
             {
                 std::cout << "* ";
             } 
