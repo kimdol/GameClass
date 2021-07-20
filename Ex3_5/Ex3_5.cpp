@@ -42,7 +42,7 @@ int main()
 		std::cout << u.c << std::endl;
 
 	}*/
-	/* 배열의 기초 문제1*/
+	/* 배열의 기초 문제*/
 	/*{
 		const int CLASSNUM{ 5 };
 		int input[CLASSNUM]{ 0, 0, 0, 0, 0 }, result{ 0 };
@@ -56,8 +56,83 @@ int main()
 		std::cout << "총 합 : " << result <<
 			"\n" << "평균 : " << result / CLASSNUM << std::endl;
 	}*/
-	/**/
+	/*배열 연습문제 1-1*/
+	/*{
+		const int CLASSNUM{ 5 };
+		int reportCard[CLASSNUM]{};
+		int bigScore{ 0 }, smallScore{ 100 };
+
+		std::cout << "학생 점수를 입력하라 \n";
+		std::cout << "입력 : ";
+
+		for (int i = 0; i < CLASSNUM; i++)
+		{
+			std::cin >> reportCard[i];
+			if (reportCard[i] > bigScore)
+			{
+				bigScore = reportCard[i];
+			}
+			if (reportCard[i] < smallScore)
+			{
+				smallScore = reportCard[i];
+			}
+		}
+
+		std::cout << "최저 점수 : " << smallScore << "\n"
+			<< "최고 점수 : " << bigScore << std::endl;
+
+	}*/
+	/*배열 연습문제 1-2*/
+	/*{
+		const int CLASSNUM{ 5 };
+		int reportCard[CLASSNUM]{}, rank[CLASSNUM]{}, tmp[CLASSNUM]{};
+		int ranking{ 1 }, top[2]{ 0, 0 };
+
+		std::cout << "학생 점수를 입력하라 \n";
+		std::cout << "입력 : ";
+
+		for (int i = 0; i < CLASSNUM; i++)
+		{
+			std::cin >> reportCard[i];
+			tmp[i] = reportCard[i];
+		}
+
+		for (int i = 0; i < CLASSNUM; i++)
+		{
+			for (int k = 0; k < CLASSNUM; k++)
+			{
+				if (top[0] < tmp[k])
+				{
+					top[0] = tmp[k];
+					top[1] = k;
+				}
+			}
+			tmp[top[1]] = 0;
+			rank[top[1]] = ranking++;
+		}
+		
+		for (int i = 0; i < CLASSNUM; i++)
+		{
+			std::cout << reportCard[i] << " ";
+		}
+		std::cout << "\n";
+		
+
+	}*/
+	/* 문자열 공부 */
 	{
+		char array[6]{ 'd', 'o', 'g', 'g', 'y' };
+
+		//array[5] = '\0';
+		std::cout << array << std::endl;
+
+		char myStr[10];
+		std::cout << "Input String : ";
+		// 넘치게 입력하면 오버플로우가 일어나서 stack(메모리에 올라가는 그 스택)이 손상됨
+		std::cin >> myStr;
+		std::cout << "your string is \"" << myStr << "\"" <<
+			std::endl;
+
 
 	}
 }
