@@ -142,7 +142,7 @@ int main()
 		{
 			for (int k = 0; k < i; k++)
 			{
-				if (reportCard[k] > reportCard[k+1])
+				if (reportCard[k] < reportCard[k+1])
 				{
 					scoreTmp = reportCard[k + 1];
 					reportCard[k + 1] = reportCard[k];
