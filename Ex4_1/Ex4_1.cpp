@@ -37,7 +37,7 @@ int main()
                     }
                     std::cout << "\n";
                 }
-                std::cout << "왼쪽(1)과 오른쪽(2)과 끝내기(3)을 누르세요. ";
+                std::cout << "왼쪽(1)과 오른쪽(2)과 끝내기(3)중에서 1개를 누르세요. ";
                 std::cin >> command;
                 if (command == 3)
                 {
