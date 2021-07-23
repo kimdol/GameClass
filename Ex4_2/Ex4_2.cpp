@@ -3,7 +3,7 @@
 int main()
 {
     /*중간점검 연습문제 1-1*/
-    {
+    /*{
         const int TMPNUM{ 24 };
         int  pascal[TMPNUM][TMPNUM]{};
         int m{ 1 }, n{ 1 };
@@ -35,5 +35,27 @@ int main()
         }
 
        
+    }*/
+    /*중간점검 연습문제 1-2*/
+    {
+        int cnt{ 0 }, nxt{ 0 }, i{ 0 }, k{ 0 };
+        int txt[5][5]{};
+
+        switch (nxt)
+        {
+            case 0:
+                if (cnt < 4)
+                {
+                    txt[i][k] = ++k;
+                }
+                else
+                {
+                    nxt++;
+                    cnt = 0;
+                }
+                break;
+        }
+
+        
     }
 }
