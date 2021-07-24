@@ -152,7 +152,7 @@ int main()
                         else
                         {
                             nxt = 3;
-                        } 
+                        }
                     }
                     else
                     {
@@ -220,7 +220,7 @@ int main()
         {
             for (k = 0; k < MAX; k++)
             {
-                
+
                 std::cout << txt[i][k] << "\t";
 
                 if (i == 1)
