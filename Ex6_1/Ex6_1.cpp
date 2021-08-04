@@ -1,5 +1,12 @@
 ﻿#include <iostream>
 
+void Swap(int* a, int* b)
+{
+    int tmp{ *a };
+    *a = *b;
+    *b = tmp;
+}
+
 int main()
 {
     /*포인터 기초*/
@@ -27,4 +34,12 @@ int main()
 
         p0++;
     }*/
+    /*포인터 기초4*/
+    
+    int x{ 10 }, y{ 20 };
+    
+    Swap(&x, &y);
+
+    std::cout << x << ", " << y << std::endl;
+
 }
