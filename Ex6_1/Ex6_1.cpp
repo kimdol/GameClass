@@ -115,7 +115,6 @@ int main()
 	}*/
 	/*1. 배열을 순회(traverse)해 봅시다.*/
 	int array1[5]{ 1, 2, 3, 4, 5 };
-	int* p{ array1 };
 
 	for (int i = 0; i < 5; i++)
 	{
