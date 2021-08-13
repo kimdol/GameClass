@@ -103,13 +103,13 @@ int main()
 
     return 0;*/ 
     /*C++ 스타일  동적  할당*/
-    int* p1{new int {4}};
-    // int *p1;
-    // p1 = new int;
-    // *p1 = 4;
-    // 와 같다.
+    /*int* p1{new int {4}};
+        // int *p1;
+        // p1 = new int;
+        // *p1 = 4;
+        // 와 같다.
 
-    delete p1;
+    delete p1;*/
 
 
 }
