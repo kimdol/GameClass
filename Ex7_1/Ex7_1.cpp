@@ -34,7 +34,7 @@ int main()
 	/*int a{ 0 };
 
 	assert(a == 10);*/
-	/* 상자 게임 */
+	/* 소코반 상자 게임 */
 	Object* state = new Object[gStageWidth * gStageHeigh];
 
 	Initialize(state, gStageWidth, gStageHeigh, gStageData);
