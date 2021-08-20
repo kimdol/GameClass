@@ -4,8 +4,8 @@
 // 기획서에서 넘어오기에 참고용으로 const 붙이기
 const char gStageData[] = "\
 ########\n\
-# .. p #\n\
-# oo   #\n\
+#..o  p#\n\
+#    o #\n\
 #      #\n\
 ########";
 const int gStageWidth{ 8 };
@@ -168,6 +168,11 @@ void Update(Object* state, char input, int w, int h)
 
 		case 's':
 			dy = 1;
+			break;
+
+		case 'q':
+			delete[] state;
+			exit(0);
 			break;
 	}
 
