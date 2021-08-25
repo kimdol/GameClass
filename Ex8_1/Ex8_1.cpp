@@ -26,6 +26,28 @@ void SequentialSort(int input[], int count)
         }
     }
 }
+/*juhoSort(Ot(n))*/
+/*배열 n개를 자리수에 맞게 차곡차곡 넣어라*/
+void JuhoSort(int input[], int cnt, int one[10], int (*ten)[10])
+{
+    if (cnt == 0)
+    {
+        return;
+    }
+
+    // n번째에 있는 거를 자리수에 맞게 차곡차곡 넣어라
+    if (0 <= input[cnt - 1] && 10 >= input[cnt - 1])
+    {
+        one[input[cnt - 1]] += 1;
+    }
+    else if (10 <= input[cnt - 1] && 99 >= input[cnt - 1])
+    {
+        ten[(input[cnt - 1] / 10)][(input[cnt - 1] % 10)] += 1;
+    }
+    // n - 1개를 자리 수에 맞게 차곡차곡 넣어라
+    JuhoSort(input, cnt - 1, one, ten);
+}
+
 int main()
 {
     /*기본 정렬*/
