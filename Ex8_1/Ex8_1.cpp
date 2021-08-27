@@ -121,6 +121,73 @@ void BubbleSort(int input[], int size)
         }
     }
 }
+/*insertion 정렬*/
+void InsetionSort(int input[], int size)
+{
+    for (int i = 1; i < size; i++)
+    {
+        int j{ i };
+        int target = { input[i] };
+
+        while (--j >= 0 && target < input[j])
+        {
+            input[j + 1] = input[j];
+            input[j] = target;
+        }
+    }
+}
+/*Merge  sort*/
+void Merge(int input[], int start, int half, int end, int temp[])
+{
+    int i{ start };
+    int j{ half + 1 };
+    int k{};
+
+    while (i <= half && j <= end)
+    {
+        // 한개씩 꺼내기
+        // 작은거 왼쪽, 큰거  오른쪽
+        if (input[i] < input[j])
+        {
+            temp[k++] = input[i++];
+        }
+        else
+        {
+            temp[k++] = input[j++];
+        }
+    }
+
+    //왼쪽이 남았냐? 오른쪽이 나았냐?(남은 친구들 병합)
+    while (i <= half)
+    {
+        temp[k++] = input[i++];
+    }
+    while (j <= end)
+    {
+        temp[k++] = input[j++];
+    }
+    // 상위 함수에게 알려주기 위해서 어쩔수없이 복사
+    k = 0;
+    for (int i = start; i <= end; i++)
+    {
+        input[i] = temp[k++];
+    }
+}
+void MergeSort(int input[], int start, int end, int temp[])
+{
+    // base case
+    if (start >= end)
+    {
+        return;
+    }
+
+    // recursive case
+    int half{ (start + end) / 2 };
+    MergeSort(input, start, half, temp);
+    MergeSort(input, half + 1, end, temp);
+
+    Merge(input, start, half, end, temp);
+}
 
 int main()
 {
@@ -160,4 +227,23 @@ int main()
     int array[ARRAY_SIZE]{ 8, 7, 2, 3, 1 };
     BubbleSort(array, ARRAY_SIZE);
     PrintArray(array, ARRAY_SIZE);*/
+    /*insertion 정렬*/
+    /*const int ARRAY_SIZE{ 5 };
+    int array[ARRAY_SIZE]{ 8, 7, 2, 3, 1 };
+    InsetionSort(array, ARRAY_SIZE);
+    PrintArray(array, ARRAY_SIZE);*/
+    /*Merge  sort*/
+    /*const int ARRAY_SIZE{ 5 };
+    int array[ARRAY_SIZE]{ 8, 7, 2, 3, 1 };
+    int temp[ARRAY_SIZE]{};
+    MergeSort(array, 0, ARRAY_SIZE - 1, temp);
+    PrintArray(array, ARRAY_SIZE);*/
+    /*Merge  sort*/
+    const int ARRAY_SIZE{ 5 };
+    int array[ARRAY_SIZE]{ 8, 7, 2, 3, 1 };
+    int temp[ARRAY_SIZE]{};
+    MergeSort(array, 0, ARRAY_SIZE - 1, temp);
+    PrintArray(array, ARRAY_SIZE);
+    
+
 }
