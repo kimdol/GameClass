@@ -274,7 +274,7 @@ int main()
     int temp[ARRAY_SIZE]{};
     MergeSort(array, 0, ARRAY_SIZE - 1, temp);
     PrintArray(array, ARRAY_SIZE);*/
-    /*Merge  sort*/
+    /*퀵 정렬*/
     const int ARRAY_SIZE{ 5 };
     int array[ARRAY_SIZE]{ 8, 7, 2, 3, 1 };
     int temp[ARRAY_SIZE]{};
