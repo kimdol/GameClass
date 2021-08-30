@@ -188,6 +188,42 @@ void MergeSort(int input[], int start, int end, int temp[])
 
     Merge(input, start, half, end, temp);
 }
+/*퀵 정렬*/
+void QuickSort(int input[], int left, int right)
+{
+    int i { left }, j{ right };
+    int pivot{ input[(left + right) / 2] };
+
+    do
+    {
+        while (input[i] < pivot)
+        {
+            i++;
+        }
+        while (input[j] > pivot)
+        {
+            j--;
+        }
+
+        if (i <= j)
+        {
+            Swap(input[i], input[j]);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (left < j)
+    {
+        QuickSort(input, left, j);
+    }
+
+    if (i < right)
+    {
+        QuickSort(input, i, right);
+    }
+}
+
 
 int main()
 {
@@ -242,7 +278,7 @@ int main()
     const int ARRAY_SIZE{ 5 };
     int array[ARRAY_SIZE]{ 8, 7, 2, 3, 1 };
     int temp[ARRAY_SIZE]{};
-    MergeSort(array, 0, ARRAY_SIZE - 1, temp);
+    QuickSort(array, 0, ARRAY_SIZE - 1);
     PrintArray(array, ARRAY_SIZE);
     
 
