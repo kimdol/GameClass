@@ -67,13 +67,13 @@ void ArrPrint(StackNubbin* nubbin)
 }
 void stackDelte(StackNubbin* nubbin)
 {
-    while (nubbin->nxt)
+    StackNubbin* del{ nubbin };
+
+    while (del)
     {
         nubbin = nubbin->nxt;
-    }
-    while (nubbin->prev)
-    {
-
+        delete del;
+        del = nubbin;
     }
 }
 int main()
@@ -84,16 +84,17 @@ int main()
     //int order{ 0 };
     //push(array, ARR_SIZE, 5, &order);
     /*push*/
-    StackNubbin start{1, nullptr, nullptr};
-    push(&start, 5);
-    push(&start, 6);
-    push(&start, 7);
+    StackNubbin* start = new StackNubbin{ 5, nullptr, nullptr };
+    push(start, 5);
+    push(start, 6);
+    push(start, 7);
     /*pop*/
     //pop(array, &order);
     /*pop*/
-    pop(&start);
+    pop(start);
     /*print*/
     //ArrPrint(array, ARR_SIZE);
-    push(&start, 5);
-    ArrPrint(&start);
+    push(start, 5);
+    ArrPrint(start);
+    stackDelte(start);
 }
