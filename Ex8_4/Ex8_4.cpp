@@ -171,7 +171,7 @@ void PrintInfo(Queue& que)
 		nxt++;
 	}
 	std::cout << std::endl;
-	// 만약 head가 QUE_SIZE 넘어가면 초기화
+	// 만약 head와 tail이 QUE_SIZE-1 넘어가면 초기화
 	if ((que.tail >= QUE_SIZE - 1) && (que.head >= QUE_SIZE - 1))
 	{
 		que.tail = -1;
