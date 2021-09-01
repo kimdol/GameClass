@@ -30,6 +30,13 @@ void PrintInfo(Queue& que)
 			<< std::endl;
 	}
 
+	/*for (int i = que.head; i != que.tail; )
+	{
+		i = (i+1) % QUE_SIZE;
+		std::cout << que.container[i]
+			<< std::endl;
+	}*/
+
 	if (que.head == que.tail)
 	{
 		std::cout << "--------------------------------------" << std::endl;
