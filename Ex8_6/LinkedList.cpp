@@ -142,13 +142,12 @@ bool Delete(LinkedList& list, std::string name)
 
 	return true;
 }
-
+// JuHo의 집어넣기 함수
 Monster* OneMonster(std::string name, int hp)
 {
 	Monster* elem = new Monster{ name, hp };
 	return elem;
 }
-
 void Insert(LinkedList& list, std::string name, int way, Monster* newMon)
 {
 	Monster* element{ list.pHead };
