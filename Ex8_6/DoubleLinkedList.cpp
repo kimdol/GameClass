@@ -81,33 +81,24 @@ void DeleteAll(DoubleLinkedList& list)
 
 	list.pHead = list.pTail = nullptr;
 }
-
+// if else 정리(간략하게 쓰는법)
 bool Delete(DoubleLinkedList& list, std::string name)
 {
 	Monster2* element{ FindMonster(list, name) };
 
 	if (element != nullptr)
 	{
-		if (element == list.pHead)
+		if (element->pPrev == nullptr)
 		{
 			list.pHead = element->pNext;
-			if (element->pNext != nullptr)
-			{
-				element->pNext->pPrev = element->pPrev;
-			}
 		} else
 		{
 			element->pPrev->pNext = element->pNext;
 		}
 		
-		if (element == list.pTail)
+		if (element->pNext == nullptr)
 		{
 			list.pTail = element->pPrev;
-
-			if (element->pPrev != nullptr)
-			{
-				element->pPrev->pNext = element->pNext;
-			}
 		} else
 		{
 			element->pNext->pPrev = element->pPrev;
