@@ -11,8 +11,6 @@ void Warrior::Setting(int hp, int ad, int bersk)
 	mAd = ad;
 	mBersk = bersk;
 }
-
-
 void Warrior::Attack(Warrior& attacked)
 {
 	std::cout << mAd << "만큼 데미지를 줬다!"
@@ -24,7 +22,6 @@ void Warrior::Attack(Warrior& attacked)
 	}
 
 }
-
 void Warrior::Skill()
 {
 	if (mBersk)
