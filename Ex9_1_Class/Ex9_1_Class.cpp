@@ -101,10 +101,28 @@ int main()
     // p1 스킬 off
     player1.Skill(); */
     /*point2D(pixel) class*/
-    Point2D oneCel;
+    /*Point2D oneCel;
     oneCel.Setting(2, 2);
 
-    oneCel.PointDraw();
+    oneCel.Print();
+    oneCel.Length();*/
+    /*생성자, 소멸자*/
+    /*Point2D* pt = new Point2D{ 1, 3 };
+    pt->Print();
+    delete pt;*/
+    /*기본 생성자를 사용한 인스턴스화*/
+    /*Point2D pt1 = Point2D();
+    * Point2D pt1{};
+    pt1.Print();*/
+    /*생성자를 사용해서 인스턴스화*/
+    /*Point2D pt2(2, 3);
+    Point2D pt2{ 2, 3 };
+    pt2.Print();*/
+    /*POD(11:간단, 00:간단x)*/
+    /*std::cout << 
+        std::is_trivial<Point2D>::value 
+        << std::is_pod<Point2D>::value
+        << std::endl;*/
 
 
 }
