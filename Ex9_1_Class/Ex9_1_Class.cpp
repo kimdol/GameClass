@@ -47,7 +47,7 @@ public:
         
     }
 };
-// 상수 멤버 함수(const member function)
+/* 상수 멤버 함수(const member function)*/
 class Calender
 {
 private:
@@ -83,7 +83,68 @@ public:
         }
     }
 };
+/*초기화 리스트를 가진 class*/
+class Quest
+{
+private:
+    const int mID;
+    const int mExp;
 
+public:
+    // 초기화 리스트(Initializer List)
+    Quest(int a = 1, int b = 2) : mID{ a }, mExp( b )
+    {
+        
+    }
+
+    void Print()
+    {
+        std::cout << "ID : " << mID << std::endl;
+        std::cout << "EXP : " << mExp << std::endl;
+    }
+};
+/*elegating 생성자를 가진 class*/
+class Dele
+{
+private:
+    int mID;
+    int mExp;
+
+public:
+    // 초기화 리스트(Initializer List)
+    Dele() : mID{ 1 }, mExp(1)
+    {
+        // 초기 행동
+    }
+    Dele(int a, int b) : Dele()
+    {
+        
+    }
+
+    void Print()
+    {
+        std::cout << "ID : " << mID << std::endl;
+        std::cout << "EXP : " << mExp << std::endl;
+    }
+};
+/*소멸자 활용*/
+class MyArray
+{
+private:
+    int mLength;
+    int* mArray;
+
+public:
+    MyArray(int length) : mLength{ length }
+    {
+        mArray = new int[length];
+    }
+
+    ~MyArray()
+    {
+        delete[] mArray;
+    }
+};
 int main()
 {
     /*Dog class*/
@@ -123,6 +184,7 @@ int main()
         std::is_trivial<Point2D>::value 
         << std::is_pod<Point2D>::value
         << std::endl;*/
-
-
+    /*대리생성자 사용*/
+    /*Dele d = Dele(2, 2);
+    d.Print();*/
 }
