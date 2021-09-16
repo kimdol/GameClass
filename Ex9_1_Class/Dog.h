@@ -6,7 +6,15 @@ class Dog
 private:
 	int mAge;
 public:
-	int GetAge();
+	int mColor;
+public:
+	int GetAge() const;
+private:
+	void Eat() {};
+public:
+	Dog();
+public:
+	void aa() {};
 };
 
 class Warrior

@@ -1,6 +1,6 @@
 #include "Dog.h"
 
-int Dog::GetAge()
+int Dog::GetAge() const
 {
 	return mAge;
 }

@@ -139,13 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DateClass.cpp" />
     <ClCompile Include="Dog.cpp" />
     <ClCompile Include="Ex9_1_Class.cpp" />
     <ClCompile Include="Point2D.cpp" />
+    <ClCompile Include="Student.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DateClass.h" />
     <ClInclude Include="Dog.h" />
     <ClInclude Include="Point2D.h" />
+    <ClInclude Include="Student.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

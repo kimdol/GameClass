@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include "Dog.h"
 #include "Point2D.h"
+#include "DateClass.h"
+#include "Student.h"
 
 //class Dog
 //{
@@ -145,6 +147,7 @@ public:
         delete[] mArray;
     }
 };
+
 int main()
 {
     /*Dog class*/
@@ -187,4 +190,11 @@ int main()
     /*대리생성자 사용*/
     /*Dele d = Dele(2, 2);
     d.Print();*/
+    /*Date, Student class 설계*/
+    DateClass d{2021, 1, 1};
+    d.Print();
+
+    Student s{"홍길동", 95};
+    s.Print();
+
 }
