@@ -3,6 +3,7 @@
 #include "Point2D.h"
 #include "DateClass.h"
 #include "Student.h"
+#include "String.h"
 
 //class Dog
 //{
@@ -191,10 +192,14 @@ int main()
     /*Dele d = Dele(2, 2);
     d.Print();*/
     /*Date, Student class 설계*/
-    DateClass d{2021, 1, 1};
+    /*DateClass d{2021, 1, 1};
     d.Print();
 
     Student s{"홍길동", 95};
-    s.Print();
+    s.Print();*/
+    /*String class 설계*/
+    String s1{ "홍길동" };
+
+    s1.Print();
 
 }
