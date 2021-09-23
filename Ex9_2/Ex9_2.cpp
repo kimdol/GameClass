@@ -18,6 +18,12 @@ public:
     }
 };
 
+// 연산자
+int operator +(MyClass, MyClass)
+{
+    return 1;
+}
+
 int main()
 {
     
