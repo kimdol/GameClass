@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include "MyArray.h"
 
 // 대리생성자 활용
 class MyClass
@@ -68,6 +69,18 @@ int main()
 {
     MyClass a{ 1, 1 };
     MyClass b;
-
     b = ++a;
+
+    MyArray arr1{ 3 };
+    MyArray arr2{ 1 };
+    
+    
+    arr1 - arr2;
+    --arr1;
+
+    std::cout << arr1[2] << std::endl;
+
+    std::cout << (int)arr2 << std::endl;
+
+
 }
