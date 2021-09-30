@@ -19,8 +19,11 @@ public:
 	BREED GetBreed() const;
 	void SetBreed(BREED breed);
 
+	void Sound();
+
 public:
 	Dog();
+	Dog(BREED breed, int age, int weight);
 	~Dog();
 };
 

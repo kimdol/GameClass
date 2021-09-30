@@ -30,6 +30,10 @@ Animal::Animal() : mAge{ 0 }, mWeight{ 0 }
 {
 }
 
+Animal::Animal(int age, int weight) : mAge{ age }, mWeight{ weight }
+{
+}
+
 Animal::~Animal()
 {
 }

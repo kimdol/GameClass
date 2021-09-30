@@ -18,5 +18,6 @@ public:
 
 public:
 	Animal();
+	Animal(int age, int weight);
 	~Animal();
 };
