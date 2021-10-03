@@ -1,6 +1,6 @@
 ﻿#include <iostream>
-// #include "SingleLinkedList.h"
-//#include "Stack.h"
+#include "SingleLinkedList.h"
+#include "Stack.h"
 #include "Queue.h"
 
 int main()
@@ -22,28 +22,30 @@ int main()
     list1.Push("b", 10);
     list1.Push("c", 100);
     list1.Push("asdf", 1000);
+    list1.PrintMonsters();
 
     list1.Pop();
     list1.Pop();
 
-    list1.PrintStack();*/
+    list1.PrintStack();
+    list1.PrintMonsters();*/
     /*큐*/
-    /*Queue list1;
+    Queue list1;
 
     list1.Enqueue("a", 1);
     list1.Enqueue("b", 10);
     list1.Enqueue("c", 100);
     list1.Enqueue("asdf", 1000);
-    list1.PrintQueue();
+    list1.PrintMonsters();
 
     list1.Dequeue();
     list1.Dequeue();
-    list1.PrintQueue();
+    list1.PrintMonsters();
 
     list1.Enqueue("llllllllllll", 1000);
-    list1.PrintQueue();
+    list1.PrintMonsters();
 
     list1.Dequeue();
-    list1.PrintQueue();*/
+    list1.PrintMonsters();
 
 }

@@ -31,7 +31,9 @@ Monster* SingleLinkedList::CreateMonster(std::string name, int hp)
 void SingleLinkedList::PrintMonsters()
 {
 	Monster* element{ mHead };
-
+	std::cout <<
+		"======================="
+		<< std::endl;
 	// Traverse
 	while (element != nullptr)
 	{
@@ -39,6 +41,9 @@ void SingleLinkedList::PrintMonsters()
 			<< element->hp << std::endl;
 		element = element->nxt;
 	}
+	std::cout <<
+		"======================="
+		<< std::endl;
 }
 
 int SingleLinkedList::GetContMonsters()

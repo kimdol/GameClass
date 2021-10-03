@@ -1,22 +1,16 @@
 #pragma once
 #include <iostream>
+#include "Monster.h"
 
-struct Monster
-{
-	std::string name{};
-	int hp{};
-
-	Monster* nxt{};
-};
 class SingleLinkedList
 {
-private:
+protected:
 	Monster* mHead;
 	Monster* mTail;
 
 public:
 	SingleLinkedList();
-	~SingleLinkedList();
+	virtual ~SingleLinkedList();
 
 	Monster* CreateMonster(std::string name, int hp);
 	void PrintMonsters();

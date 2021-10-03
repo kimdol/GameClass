@@ -6,7 +6,7 @@ Stack::Stack() : mTop{ nullptr }
 
 Stack::~Stack()
 {
-	AllDelete();
+	DeleteAll();
 
 	mTop = nullptr;
 }
@@ -18,6 +18,9 @@ void Stack::Push(std::string name, int hp)
 	// top에 새로운 monster 삽입
 	elem->nxt = mTop;
 	mTop = elem;
+
+	// 상속을 위한 것
+	mHead = elem;
 }
 
 void Stack::Pop()
@@ -29,10 +32,13 @@ void Stack::Pop()
 		delete mTop;
 		// top 이동
 		mTop = nxt;
+
+		// 상속을 위한 것
+		mHead = nxt;
 	}
 }
 
-void Stack::PrintStack()
+/*void Stack::PrintStack()
 {
 	Monster* elem{ mTop };
 
@@ -43,16 +49,16 @@ void Stack::PrintStack()
 			<< std::endl;
 		elem = elem->nxt;
 	}
-}
+}*/
 
-void Stack::AllDelete()
-{
-	Monster* elem{ mTop }, *next{};
-
-	while (elem)
-	{
-		next = elem->nxt;
-		delete elem;
-		elem = next;
-	}
-}
+//void Stack::AllDelete()
+//{
+//	Monster* elem{ mTop }, *next{};
+//
+//	while (elem)
+//	{
+//		next = elem->nxt;
+//		delete elem;
+//		elem = next;
+//	}
+//}

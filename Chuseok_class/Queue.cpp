@@ -1,12 +1,12 @@
 #include "Queue.h"
 
-Queue::Queue() : mHead{ nullptr }, mTail{ nullptr }
+Queue::Queue()
 {
 }
 
 Queue::~Queue()
 {
-	AllDelete();
+	DeleteAll();
 	mHead = mTail = nullptr;
 }
 
@@ -49,31 +49,31 @@ void Queue::Dequeue()
 	}
 }
 
-void Queue::PrintQueue()
-{
-	Monster* elem{ mHead };
-
-	std::cout <<
-		"Head => ";
-	while (elem)
-	{
-		std::cout <<
-			elem->name << ":" << elem->hp
-			<< " -> ";
-		elem = elem->nxt;
-	}
-	std::cout <<
-		"Tail" << std::endl;
-}
-
-void Queue::AllDelete()
-{
-	Monster* elem{ mHead }, * nxt{};
-
-	while (elem)
-	{
-		nxt = elem->nxt;
-		delete elem;
-		elem = nxt;
-	}
-}
+//void Queue::PrintQueue()
+//{
+//	Monster* elem{ mHead };
+//
+//	std::cout <<
+//		"Head => ";
+//	while (elem)
+//	{
+//		std::cout <<
+//			elem->name << ":" << elem->hp
+//			<< " -> ";
+//		elem = elem->nxt;
+//	}
+//	std::cout <<
+//		"Tail" << std::endl;
+//}
+//
+//void Queue::AllDelete()
+//{
+//	Monster* elem{ mHead }, * nxt{};
+//
+//	while (elem)
+//	{
+//		nxt = elem->nxt;
+//		delete elem;
+//		elem = nxt;
+//	}
+//}

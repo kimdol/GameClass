@@ -1,19 +1,12 @@
 #pragma once
 #include <iostream>
+#include "SingleLinkedList.h"
 
-struct Monster
+class Queue : public SingleLinkedList
 {
-	std::string name{};
-	int hp{};
-
-	Monster* nxt{};
-	Monster* prev{};
-};
-class Queue
-{
-private:
-	Monster* mHead;
-	Monster* mTail;
+//private:
+//	Monster* mHead;
+//	Monster* mTail;
 
 public:
 	Queue();
@@ -21,7 +14,7 @@ public:
 
 	void Enqueue(std::string name, int hp);
 	void Dequeue();
-	void PrintQueue();
-	void AllDelete();
+	// void PrintQueue();
+	// void AllDelete();
 };
 

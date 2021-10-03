@@ -1,15 +1,8 @@
 #pragma once
 #include <iostream>
+#include "SingleLinkedList.h"
 
-struct Monster
-{
-	std::string name{};
-	int hp{};
-
-	Monster* nxt{};
-};
-
-class Stack
+class Stack : public SingleLinkedList
 {
 private:
 	Monster* mTop;
@@ -20,8 +13,8 @@ public:
 
 	void Push(std::string name, int hp);
 	void Pop();
-	void PrintStack();
-	void AllDelete();
+	// void PrintStack();
+	// void AllDelete();
 
 };
 
