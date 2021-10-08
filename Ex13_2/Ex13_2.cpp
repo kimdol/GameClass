@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
 
 // 람다식을 썼을 때 필요가 없어짐
 int IntCompare(const void* a, const void* b)
@@ -100,23 +101,23 @@ int main()
         std::cout << e << std::endl;
     }*/
     // STL 알고리즘 연습1
-    std::vector<int>    v{ 2, 1, 3 };
+    std::vector<int> v1{ 2, 1, 3 };
 
     // qsort(v.data(), v.size(), sizeof(int), &IntCompare);
-    qsort(v.data(), v.size(), sizeof(int), 
+    qsort(v1.data(), v1.size(), sizeof(int), 
         [] (const void* a, const void* b)
         {
         return *((int*)b) - *((int*)a);
         }
     );
 
-    std::for_each(v.begin(), v.end(), [](int val)
+    std::for_each(v1.begin(), v1.end(), [](int val)
         {
             std::cout << val << std::endl;
         }
     );
 
-    for (auto e : v)
+    for (auto e : v1)
     {
         std::cout << e << std::endl;
     }
