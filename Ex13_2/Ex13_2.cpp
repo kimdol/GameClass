@@ -2,8 +2,33 @@
 #include <vector>
 #include <algorithm>
 
+// 람다식을 썼을 때 필요가 없어짐
+int IntCompare(const void* a, const void* b)
+{
+    // 내림차순은...
+    // -1 : a > b
+    // 0 : 같다
+    // 1 : a < b
+    // 짧은 코딩은 return right - left;
+    int left{ *static_cast<const int*>(a) };
+    int right{ *static_cast<const int*>(b) };
 
+    if (left > right)
+    {
+        return -1;
+    }
+    else if (left < right)
+    {
+        return 1;
+    }
+    return 0;
 
+    // 오름차순은...
+    // 1 : a > b
+    // 0 : 같다
+    // -1 : a < b
+    // 짧은 코딩은 return left - right;
+}
 
 int main()
 {
