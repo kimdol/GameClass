@@ -83,3 +83,67 @@ void NormalStdnPrint(std::vector<Student>& record)
 	}
 
 }
+/*******************Map*****************************/
+void MAdd(std::map<int, Student>& Record)
+{
+	int num{}, score{};
+	std::string name{};
+
+	std::cout <<
+		"[번호 학생이름 시험성적]";
+	std::cout << " >> ";
+	std::cin >> num >> name >> score;
+
+	Record.insert({ num, {num, name, score} });
+}
+void MRemove(std::map<int, Student>& Record)
+{
+	int num;
+	std::cout <<
+		"[삭제할 학생 번호]";
+	std::cout << " >> ";
+	std::cin >> num;
+
+	Record.erase(num);
+}
+void MAllPrint(std::map<int, Student>& Record)
+{
+	for (auto pair : Record)
+	{
+		pair.second.Print();
+	}
+}
+float MSum(std::map<int, Student>& Record)
+{
+	float sum{};
+	for (auto pair : Record)
+	{
+		sum += pair.second.mScore;
+	}
+	return sum;
+}
+void MScorePrint(std::map<int, Student>& Record)
+{
+	float sum{ MSum(Record) };
+
+	std::cout << "총 합 : "
+		<< sum
+		<< " ,평균 : "
+		<< sum / Record.size()
+		<< std::endl;
+}
+void MNormalStdnPrint(std::map<int, Student>& record)
+{
+	float mean{ MSum(record) / record.size() };
+	for (auto pair : record)
+	{
+		if (mean <= pair.second.mScore)
+		{
+			pair.second.Print();
+		}
+	}
+}
+
+
+
+
