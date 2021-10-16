@@ -97,4 +97,5 @@ int main()
 	record.push_back({ 4, "Choi", 30 });*/
 
 	System(record);
+
 }
