@@ -1,8 +1,10 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <vector>
-#include <sstream>
+#include "Monster.h"  // 바이너리로 읽고 쓰기
 
+
+// 파일시스템2_예외처리
+/*  
 //bool LoadFile(const char* filename)
 //{
 //    // 1. 파일 스트림 객체(입력)
@@ -137,7 +139,6 @@ bool LoadFile(const char* filename, std::vector<Monster>& vector)
     }
     return true;
 }
-
 bool SaveFile(const char* filename, std::vector <Monster>& monsters)
 {
     std::ofstream ofs;
@@ -164,11 +165,18 @@ bool SaveFile(const char* filename, std::vector <Monster>& monsters)
 
     return true;
 }
+*/ 
+// 헤더 파일 - POD
+struct Header
+{
+    int version{ 1 };
+    int itemCount{};
+};
 
 int main()
 {
-    // 파일 스트림
-    {
+    // 파일 스트림2
+    /*   {
         //LoadFile("F:\\DirectX_Class\\GameClass\\Ex15_1\\Data\\SimpleData.txt");
 
         std::vector<Monster> monsters;
@@ -183,5 +191,16 @@ int main()
 
         SaveFile("Data/SimpleData.txt", monsters);
         
+    }*/
+    // 바이너리
+    {
+        std::vector<Monster> monsters
+        {
+            {"JELLY", 1, 1, 1},
+            {"WOLF", 5, 5, 5},
+            {"DEMON", 10, 10, 10}
+        };
+
+        SaveToFile("Data/SimpleData.dat", monster);
     }
 }
