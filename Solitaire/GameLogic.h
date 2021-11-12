@@ -16,13 +16,14 @@ namespace solitaire
 	private:
 		HWND mHwnd;
 		const int BOARD_ROW = 5;
-		const int BOARD_COLUMN = 0;
+		const int BOARD_COLUMN = 8;
 		const Gdiplus::RectF BOARD_COUNT_RECT{ 885.0f, 60.0f, 120.0f, 30.0f };
 
 		std::unique_ptr<Gdiplus::Image> mBackground;
 		std::list<Card> mDeck;
 
 		int mFlipCount;
+		Card* mpSelectedCard;
 
 	public:
 		void initialize(HWND hwnd);

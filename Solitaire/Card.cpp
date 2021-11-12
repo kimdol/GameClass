@@ -3,8 +3,9 @@
 
 namespace solitaire
 {
-	Card::Card(HWND hwnd, Type type, int x, int y) :
+	Card::Card(HWND hwnd, int index, Type type, int x, int y) :
 		mHwnd{ hwnd },
+		mIndex{ index },
 		mType{ type },
 		mIsFront{ false },
 		mX{ x },
