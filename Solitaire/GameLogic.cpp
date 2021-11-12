@@ -48,6 +48,7 @@ namespace solitaire
 	}
 	void GameLogic::CreateCards()
 	{
+		// TODO : 카드 생성해야 함
 		mDeck.push_back(solitaire::Card(mHwnd, solitaire::Type::Bear, 0, 0));
 		mDeck.push_back(solitaire::Card(mHwnd, solitaire::Type::Wolf, 150, 0));
 		mDeck.push_back(solitaire::Card(mHwnd, solitaire::Type::Dragon, 300, 0));
