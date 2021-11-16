@@ -1,20 +1,15 @@
 #include <Windows.h>
-#include <d2d1.h>
+#include "D2DFramework.h"
 
-#pragma comment (lib, "d2d1.lib")
 
 const wchar_t gClassName[] = L"MyWindowClass";
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
-// 0. 전역변수 - 인터페이스
-ID2D1Factory* gpD2DFactory{};
-ID2D1HwndRenderTarget* gpRenderTarget{};
+// 매크로 만듬
+#define SAFE_RELEASE(p) { if (p) { p->Release(); p = nullptr;}}
 
-ID2D1SolidColorBrush* gpBrush{};
-ID2D1RadialGradientBrush* gpRadialBrush{};
-
-
+D2DFramework myFramework;
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -23,15 +18,6 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
-	// 1. Direct2D Factory 생성
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &gpD2DFactory);
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr, L"Failed to create D2D Factory", L"Error", MB_OK);
-		return 0;
-	}
-
-
 
 	WNDCLASSEX wc;
 
@@ -47,7 +33,7 @@ int WINAPI WinMain(
 
 	if (RegisterClassEx(&wc) == false)
 	{
-		MessageBox(nullptr, L"Failed To Register window class!", L"Error", MB_OK | MB_ICONEXCLAMATION);
+		D2DFramework::ShowErrorMsg(L"Failed To Register window class!");
 		return 0;
 	}
 
@@ -69,135 +55,60 @@ int WINAPI WinMain(
 
 	if (hwnd == 0)
 	{
-		MessageBox(nullptr, L"Failed To Create window!", L"Error", MB_OK | MB_ICONEXCLAMATION);
+		D2DFramework::ShowErrorMsg(L"Failed To Create window!");
 		return 0;
 	}
-
-	// 2. 렌더 타겟 생성
-	GetClientRect(hwnd, &wr);
-	hr = gpD2DFactory->CreateHwndRenderTarget(
-		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(hwnd, D2D1::SizeU(wr.right - wr.left, wr.bottom - wr.top)),
-		&gpRenderTarget
-	);
-	if (FAILED(hr))
+	try
 	{
-		MessageBox(nullptr, L"Failed to create D2D RenderTarget", L"Error", MB_OK);
-		return 0;
+		ThrowIfFailed(myFramework.Init(hwnd));
 	}
-
-	gpRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x9aCD32, 1.0f), &gpBrush);
-	ID2D1GradientStopCollection* pGradientStops{};
-	D2D1_GRADIENT_STOP stops[2];
-	stops[0].color = D2D1::ColorF(D2D1::ColorF::Yellow, 1);
-	stops[0].position = 0.0f;
-	stops[1].color = D2D1::ColorF(D2D1::ColorF::Crimson, 1);
-	stops[1].position = 1.0f;
-
-	hr = gpRenderTarget->CreateGradientStopCollection(stops, 2,
-		D2D1_GAMMA_2_2,
-		D2D1_EXTEND_MODE_CLAMP,
-		&pGradientStops
-		);
-	if (SUCCEEDED(hr))
+	catch (com_exception& e)
 	{
-		gpRenderTarget->CreateRadialGradientBrush(
-			D2D1::RadialGradientBrushProperties(
-				D2D1::Point2F(50, 150),
-				D2D1::Point2F(0, 0),
-				50,
-				50),
-			pGradientStops,
-			&gpRadialBrush
-			);
-	}
-	if (pGradientStops != nullptr)
-	{
-		pGradientStops->Release();
-		pGradientStops = nullptr;
+		static wchar_t wstr[128]{};
+		size_t len;
+		// 마이크로소프트에서 제공됨(c++에서 제공되는 것 찾아보기)
+		mbstowcs_s(&len, wstr, e.what(), 128);
+
+		D2DFramework::ShowErrorMsg(wstr);
 	}
 	
-
 
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
 
+	// 일단 무한반복 ( GameLoop )
+		// 메시지가 있나 살펴봅니다. PeekMessage
+		// 메시지가 있으면 처리
+			// 종료 메시지라면 반복 break
+		// 메시지가 없으면
+			// 게임의 그래픽을 갱신
 	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0))
+	while (true)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-
-	// 4. 리소스 해제 후, 종료(모든 해제는 역순으로)
-	if (gpRadialBrush != nullptr)
-	{
-		gpRadialBrush->Release();
-		gpRadialBrush = nullptr;
-	}
-	if (gpBrush != nullptr)
-	{
-		gpBrush->Release();
-		gpBrush = nullptr;
-	}
-	if (gpRenderTarget != nullptr)
-	{
-		gpRenderTarget->Release();
-		gpRenderTarget = nullptr;
-	}
-	if (gpD2DFactory != nullptr)
-	{
-		gpD2DFactory->Release();
-		gpD2DFactory = nullptr;
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+			if (msg.message == WM_QUIT)
+			{
+				break;
+			}
+		}
+		else
+		{
+			myFramework.Render();
+		}
 	}
 	
-	
+	myFramework.Release();
 
 	return static_cast<int>(msg.wParam);
-}
-
-void OnPaint(HWND hwnd)
-{
-	PAINTSTRUCT ps;
-
-	HDC hdc = BeginPaint(hwnd, &ps);
-
-	// 3. 그리기
-	gpRenderTarget->BeginDraw();
-	gpRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
-
-	gpBrush->SetOpacity(1.0f);
-	gpBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Aquamarine));
-	gpRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, 100.0f, 100.0f), gpBrush);
-
-	gpBrush->SetOpacity(0.5f);
-	gpBrush->SetColor(D2D1::ColorF(D2D1::ColorF::LightYellow));
-	gpRenderTarget->FillRectangle(D2D1::RectF(50.0f, 50.0f, 150.0f, 150.0f), gpBrush);
-
-	gpRenderTarget->FillRectangle (D2D1::RectF(0.0f, 0.0f, 100.0f, 100.0f), gpBrush);
-
-	gpRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(50.0f, 150.f), 50.0f, 50.0f),
-		gpRadialBrush);
-
-
-
-
-	gpRenderTarget->EndDraw();
-	
-
-
-
-	EndPaint(hwnd, &ps);
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	switch (message)
 	{
-		case WM_PAINT:
-			OnPaint(hwnd);
-			break;
-
 		case WM_CLOSE:
 			DestroyWindow(hwnd);
 			break;
