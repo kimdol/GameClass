@@ -33,16 +33,36 @@ inline void ThrowIfFailed(HRESULT hr)
 
 class D2DFramework
 {
+private:
+	const LPCWSTR WND_CLASS_NAME{ L"MyWindowClass" };
+
 protected:
+	HWND mHwnd{};
+
 	Microsoft::WRL::ComPtr<ID2D1Factory> mspD2DFactory{};
 	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> mspRenderTarget{};
 
+protected:
+	HRESULT InitWindow(HINSTANCE hInstance, LPCWSTR title,
+		UINT width, UINT height);
+	HRESULT InitD2D();
+	virtual HRESULT CreateDeviceResources();
+
 public:
-	virtual HRESULT Init(HWND hwnd);
+	virtual HRESULT Initialize(HINSTANCE hInstance,
+		LPCWSTR title = L"MyFramework",
+		UINT width = 1024,
+		UINT height = 768
+	);
 	virtual void Release();
+	virtual int GameLoop();
 	virtual void Render();
 
 	static void ShowErrorMsg(LPCWSTR msg, LPCWSTR title = L"Error");
+
+public:
+	static LRESULT CALLBACK WndProc(HWND hwnd, UINT message,
+		WPARAM wparam, LPARAM lparam);
 
 };
 

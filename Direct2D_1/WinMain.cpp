@@ -1,15 +1,12 @@
 #include <Windows.h>
 #include "D2DFramework.h"
 
-
-const wchar_t gClassName[] = L"MyWindowClass";
-
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
 // 매크로 만듬
 #define SAFE_RELEASE(p) { if (p) { p->Release(); p = nullptr;}}
 
-D2DFramework myFramework;
+
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -18,49 +15,16 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
+	int ret{ 0 };
 
-	WNDCLASSEX wc;
-
-	ZeroMemory(&wc, sizeof(WNDCLASSEX));
-
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpszClassName = gClassName;
-	wc.hInstance = hInstance;
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.lpfnWndProc = WindowProc;
-
-	if (RegisterClassEx(&wc) == false)
-	{
-		D2DFramework::ShowErrorMsg(L"Failed To Register window class!");
-		return 0;
-	}
-
-	RECT wr = { 0, 0, 1024, 768 };
-	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, false);
-
-	HWND hwnd = CreateWindowEx(
-		0,
-		gClassName,
-		L"Direct2D",
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		wr.right - wr.left, wr.bottom - wr.top,
-		0,
-		0,
-		hInstance,
-		0
-	);
-
-	if (hwnd == 0)
-	{
-		D2DFramework::ShowErrorMsg(L"Failed To Create window!");
-		return 0;
-	}
 	try
 	{
-		ThrowIfFailed(myFramework.Init(hwnd));
+		D2DFramework myFramework;
+
+		if (SUCCEEDED(myFramework.Initialize(hInstance)))
+		{
+			ret = myFramework.GameLoop();
+		}
 	}
 	catch (com_exception& e)
 	{
@@ -73,36 +37,7 @@ int WINAPI WinMain(
 	}
 	
 
-	ShowWindow(hwnd, nShowCmd);
-	UpdateWindow(hwnd);
-
-	// 일단 무한반복 ( GameLoop )
-		// 메시지가 있나 살펴봅니다. PeekMessage
-		// 메시지가 있으면 처리
-			// 종료 메시지라면 반복 break
-		// 메시지가 없으면
-			// 게임의 그래픽을 갱신
-	MSG msg;
-	while (true)
-	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-			if (msg.message == WM_QUIT)
-			{
-				break;
-			}
-		}
-		else
-		{
-			myFramework.Render();
-		}
-	}
-	
-	myFramework.Release();
-
-	return static_cast<int>(msg.wParam);
+	return ret;
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
