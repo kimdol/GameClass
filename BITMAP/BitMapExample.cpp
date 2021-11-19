@@ -27,9 +27,9 @@ void BitMapExample::Render()
 	mspRenderTarget->BeginDraw();
 	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
-	ClearBuffer(D2D1::ColorF::LightPink);
-	FillRectToBuffer(0, 0, 100, 100, D2D1::ColorF::Red);
-	FillRectToBuffer(50, 50, 100, 100, D2D1::ColorF(0, 1, 0, 0.5f));
+	ClearBuffer(D2D1::ColorF(1.0f, 0.0f, 0.0f, 1.0f));
+	FillRectToBuffer(0, 0, 100, 100, D2D1::ColorF(1.0f, 0.0f, 0.0f, 1.0f));
+	FillRectToBuffer(50, 50, 100, 100, D2D1::ColorF(0.0f, 1.0f, 0.0f, 0.5f));
 	DrawCircleToBuffer(200, 200, 100, D2D1::ColorF::Red);
 	DrawLineToBuffer(100, 0, 100, 200, D2D1::ColorF::Yellow);
 	PresentBuffer();
