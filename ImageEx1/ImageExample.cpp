@@ -2,8 +2,6 @@
 #include <vector>
 #include "ImageExample.h"
 
-#pragma commnet(lib, "WindowCodecs.lib")
-
 HRESULT ImageExample::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
 	HRESULT hr;
@@ -24,7 +22,10 @@ HRESULT ImageExample::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 	D2DFramework::Initialize(hInstance, title, width, height);
 
 	//hr = LoadBMP(L"Data/32.bmp", mspBitmap.GetAddressOf());
-	hr = LoadWICImage(L"Data/32.bmp", mspBitmap.GetAddressOf());
+	hr = LoadWICImage(L"Data/bg.png", mspBitmap[0].GetAddressOf());
+	hr = LoadWICImage(L"Data/bg2.png", mspBitmap[1].GetAddressOf());
+	hr = LoadWICImage(L"Data/enemy.png", mspBitmap[2].GetAddressOf());
+	hr = LoadWICImage(L"Data/player.png", mspBitmap[3].GetAddressOf());
 
 	return hr;
 }
@@ -43,7 +44,51 @@ void ImageExample::Render()
 	mspRenderTarget->BeginDraw();
 	mspRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Aquamarine));
 
-	mspRenderTarget->DrawBitmap(mspBitmap.Get());
+	mspRenderTarget->DrawBitmap(
+		mspBitmap[0].Get(),
+		D2D1::RectF(
+			0,
+			0,
+			1000,
+			500
+		)
+	);
+	mspRenderTarget->DrawBitmap(
+		mspBitmap[2].Get(),
+		D2D1::RectF(
+			0,
+			0,
+			300,
+			500
+		)
+	);
+	mspRenderTarget->DrawBitmap(
+		mspBitmap[1].Get(),
+		D2D1::RectF(
+			0,
+			0,
+			300,
+			500
+		)
+	);
+	mspRenderTarget->DrawBitmap(
+		mspBitmap[3].Get(),
+		D2D1::RectF(
+			500,
+			0,
+			300,
+			500
+		)
+	);
+	mspRenderTarget->DrawBitmap(
+		mspBitmap[3].Get(),
+		D2D1::RectF(
+			500,
+			100,
+			300,
+			500
+		)
+	);
 
 	mspRenderTarget->EndDraw();
 }
@@ -133,14 +178,44 @@ HRESULT ImageExample::LoadWICImage(LPCWSTR filename, ID2D1Bitmap** ppBitmap)
 {
 	// WIC
 	// 1. 디코더를 생성
+	Microsoft::WRL::ComPtr<IWICBitmapDecoder>bitmapDecoder;
+	HRESULT hr;
+
+	hr = mspWICFactory->CreateDecoderFromFilename(
+		filename,
+		nullptr, // const GUID
+		GENERIC_READ,
+		WICDecodeMetadataCacheOnLoad, 
+		bitmapDecoder.GetAddressOf()
+		);
+	ThrowIfFailed(hr);
 	
 	// 2. 프레임 선택
+	Microsoft::WRL::ComPtr<IWICBitmapFrameDecode>frame;
+	hr = bitmapDecoder->GetFrame(0, frame.GetAddressOf());
+	ThrowIfFailed(hr);
+
+	// 3. Format Converter (우리가 원하는 BGRA8888)
+	Microsoft::WRL::ComPtr<IWICFormatConverter> converter;
+	hr = mspWICFactory->CreateFormatConverter(converter.GetAddressOf());
+	ThrowIfFailed(hr);
+
+	hr = converter->Initialize(
+		frame.Get(),
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone,
+		nullptr,
+		0,
+		WICBitmapPaletteTypeCustom
+	);
+	ThrowIfFailed(hr);
+
+	// 4. 픽셀 배열
+	hr = mspRenderTarget->CreateBitmapFromWicBitmap(
+		converter.Get(),
+		ppBitmap
+	);
+	ThrowIfFailed(hr);
 	
-	// 3. Format Converter (R8G8B8A8...)
-	
-	// 4. 우리가 원하는 BGRA8888 포맷으로 픽셀 배열
-
-
-
-	return E_NOTIMPL;
+	return hr;
 }

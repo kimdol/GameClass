@@ -13,7 +13,7 @@ class ImageExample :
 {
     Microsoft::WRL::ComPtr<IWICImagingFactory> mspWICFactory;
 
-    Microsoft::WRL::ComPtr<ID2D1Bitmap> mspBitmap;
+    Microsoft::WRL::ComPtr<ID2D1Bitmap> mspBitmap[4];
 
 public:
     virtual HRESULT Initialize(

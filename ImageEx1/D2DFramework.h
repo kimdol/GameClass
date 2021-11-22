@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d2d1.h>
+#include <wincodec.h>
 #include <wrl/client.h>
 #include <exception>
 #include <sstream>
@@ -39,6 +40,7 @@ private:
 protected:
 	HWND mHwnd{};
 
+	Microsoft::WRL::ComPtr<IWICImagingFactory> mspWICFactory{};
 	Microsoft::WRL::ComPtr<ID2D1Factory> mspD2DFactory{};
 	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> mspRenderTarget{};
 
@@ -47,6 +49,13 @@ protected:
 		UINT width, UINT height);
 	HRESULT InitD2D();
 	virtual HRESULT CreateDeviceResources();
+
+public:
+	HWND GetWindowHandle() { return mHwnd; };
+	// 리턴값에 의해 소유권이 넘어갈수있어서 일반포인터로 씀
+	IWICImagingFactory* GetWICFactory() { return mspWICFactory.Get(); }
+	ID2D1Factory* GetD2DFactory() { return mspD2DFactory.Get(); }
+	ID2D1HwndRenderTarget* GetRenderTarget() { return mspRenderTarget.Get(); }
 
 public:
 	virtual HRESULT Initialize(HINSTANCE hInstance,

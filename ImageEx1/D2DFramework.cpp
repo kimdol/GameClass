@@ -1,6 +1,7 @@
 #include "D2DFramework.h"
 
 #pragma comment (lib, "d2d1.lib")
+#pragma comment (lib, "WindowsCodecs.lib")
 
 HRESULT D2DFramework::InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
@@ -53,8 +54,18 @@ HRESULT D2DFramework::InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width,
 
 HRESULT D2DFramework::InitD2D()
 {
+	HRESULT hr;
+
+	hr = ::CoCreateInstance(
+		CLSID_WICImagingFactory,
+		nullptr,
+		CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(mspWICFactory.GetAddressOf())
+	);
+	ThrowIfFailed(hr);
+
 	// 1. Direct2D Factory »ý¼º
-	HRESULT hr = D2D1CreateFactory(
+	hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED, mspD2DFactory.GetAddressOf());
 	ThrowIfFailed(hr);
 	
@@ -83,6 +94,7 @@ HRESULT D2DFramework::CreateDeviceResources()
 HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
 	HRESULT hr;
+	CoInitialize(nullptr);
 
 	hr = InitWindow(hInstance, title, width, height);
 	ThrowIfFailed(hr);
@@ -98,6 +110,11 @@ HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 
 void D2DFramework::Release()
 {
+	mspRenderTarget.Reset();
+	mspD2DFactory.Reset();
+	mspWICFactory.Reset();
+
+	CoUninitialize();
 }
 
 int D2DFramework::GameLoop()
