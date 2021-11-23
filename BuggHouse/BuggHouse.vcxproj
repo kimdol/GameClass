@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f50846a6-9c2b-495f-9cb9-cdba02adfbed}</ProjectGuid>
-    <RootNamespace>ImageEx1</RootNamespace>
+    <ProjectGuid>{c39051ee-c14d-4217-99c2-30a715971151}</ProjectGuid>
+    <RootNamespace>BuggHouse</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -140,19 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="ActorExample.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
+    <ClCompile Include="BuggyHouse.cpp" />
     <ClCompile Include="D2DFramework.cpp" />
-    <ClCompile Include="ImageExample.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="ActorExample.h" />
     <ClInclude Include="BitmapManager.h" />
+    <ClInclude Include="BuggyHouse.h" />
     <ClInclude Include="ComException.h" />
     <ClInclude Include="D2DFramework.h" />
-    <ClInclude Include="ImageExample.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

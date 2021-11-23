@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "ActorExample.h"
+#include "BuggyHouse.h"
 
 // 매크로 만듬
 #define SAFE_RELEASE(p) { if (p) { p->Release(); p = nullptr;}}
@@ -17,7 +17,7 @@ int WINAPI WinMain(
 
 	try
 	{
-		ActorExample myFramework;
+		BuggyHouse myFramework;
 
 		if (SUCCEEDED(myFramework.Initialize(hInstance)))
 		{
@@ -31,7 +31,7 @@ int WINAPI WinMain(
 		// 마이크로소프트에서 제공됨(c++에서 제공되는 것 찾아보기)
 		mbstowcs_s(&len, wstr, e.what(), 128);
 
-		ActorExample::ShowErrorMsg(wstr);
+		BuggyHouse::ShowErrorMsg(wstr);
 	}
 
 
