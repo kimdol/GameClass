@@ -25,6 +25,8 @@ private:
 public:
 	virtual void Draw();
 	void SetPostion(float x, float y) { mX = x; mY = y; }
+	void SetPosition(D2D_VECTOR_2F& pos) { mX = pos.x; mY = pos.y; }
+	D2D_VECTOR_2F GetPosition() { return { mX, mY }; }
 	void SetOpacity(float o) { mOpacity = 0; }
 
 
