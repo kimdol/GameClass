@@ -22,5 +22,8 @@ public:
     ) override;
     virtual void Release() override;
     virtual void Render() override;
+
+public:
+    void CheckBugs();
 };
 

@@ -14,59 +14,53 @@ Bug::Bug(D2DFramework* pFramework) :
 	mX = static_cast<float>(rand() % (rct.right - rct.left));
 	mY = static_cast<float>(rand() % (rct.bottom - rct.top));
 
-	mDir = Direction::UP;
 	mSteps = 0;
+	mIsDelete = false;
 }
-
+// 그래픽카드가 행렬과 벡터에 관련된 연산을 수행함(가속, SetTransform..)
 void Bug::Draw()
 {
-	if (mSteps++ > 10)
+	// 회전
+	if (mSteps++ > 10) // 10프레임
 	{
 		mSteps = 0;
-
-		// 방향전환
-		int dir = static_cast<int>(mDir);
-		int count = static_cast<int>(Direction::COUNT);
-
-		dir += (rand() % 3 - 1);
-		dir = (dir + count) % count;
-		mDir = static_cast<Direction>(dir);
+		mRotation += (rand() % 3 - 1) * 45;
 	}
+	// 전진
+	auto curDir = UPVECTOR * D2D1::Matrix3x2F::Rotation(mRotation);
+	mX += curDir.x;
+	mY += curDir.y;
 
-	switch (mDir)
+	auto size{ mpBitmap->GetPixelSize() };
+	D2D1_RECT_F rect{ 0, 0, 
+		static_cast<float>(size.width),  static_cast<float>(size.height) };
+
+	auto matTranslate = D2D1::Matrix3x2F::Translation(mX, mY);
+	auto matRotation = D2D1::Matrix3x2F::Rotation(mRotation,
+		{ size.width * 0.5f, size.height * 0.5f });
+
+	auto pRT = mpFramework->GetRenderTarget();
+	pRT->SetTransform(matRotation * matTranslate);
+	pRT->DrawBitmap(
+		mpBitmap,
+		rect,
+		mOpacity
+	);
+}
+
+bool Bug::IsClicked(POINT& pt)
+{
+	auto size{ mpBitmap->GetPixelSize() };
+	D2D1_RECT_F rect{
+		mX, mY,
+		static_cast<float>(mX + size.width), static_cast<float>(mY + size.height)
+	};
+
+	if (pt.x >= rect.left && pt.x <= rect.right &&
+		pt.y >= rect.top && pt.y <= rect.bottom)
 	{
-		case Direction::UP:
-			mY--;
-			break;
-		case Direction::UP_RIGHT:
-			mY--;
-			mX++;
-			break;
-		case Direction::RIGHT:
-			mX++;
-			break;
-		case Direction::DOWN_RIGHT:
-			mY++;
-			mX++;
-			break;
-		case Direction::DOWN:
-			mY++;
-			break;
-		case Direction::DOWN_LEFT:
-			mY++;
-			mX--;
-			break;
-		case Direction::LEFT:
-			mX--;
-			break;
-		case Direction::UP_LEFT:
-			mY--;
-			mX--;
-			break;
+		mIsDelete = true;
+		return true;
 	}
-
-	mX += static_cast<float>(rand() % 3 - 1);
-	mY += static_cast<float>(rand() % 3 - 1);
-
-	Actor::Draw();
+	return false;
 }
