@@ -26,13 +26,18 @@ HINSTANCE gInstance{};
 
 using namespace Microsoft::WRL;
 
-ComPtr <ID3D11Device>		gspDevice{};
-ComPtr<ID3D11DeviceContext> gspDeviceContext{};
+ComPtr <ID3D11Device>				gspDevice{};
+ComPtr<ID3D11DeviceContext>			gspDeviceContext{};
 // Grapghics instructure
-ComPtr<IDXGISwapChain>		gspSwapChain{};
+ComPtr<IDXGISwapChain>				gspSwapChain{};
+ComPtr<ID3D11Texture2D>				gspRenderTarget{}; // 목표는 디스크, 모니터 등..
+ComPtr<ID3D11Texture2D>				gspDepthStencil{};
+ComPtr<ID3D11RenderTargetView>		gspRenderTargetView{};
+ComPtr<ID3D11DepthStencilView>		gspDepthStencilView{};
 
 
 void InitD3D();
+void RenderFrame();
 void ReleaseD3D();
 
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
@@ -109,6 +114,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		else
 		{
 			// game loop
+			RenderFrame();
 		}
 	}
 
@@ -118,6 +124,92 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 }
 
 void InitD3D()
+{
+	// Device 만들기
+	// SwapChain 만들기
+
+	DXGI_SWAP_CHAIN_DESC scd{};
+
+	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+	scd.BufferCount = 1; // 백버퍼 갯수
+	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	scd.OutputWindow = gHwnd;
+	scd.Windowed = TRUE;
+	scd.SampleDesc.Count = 1;
+
+
+	D3D11CreateDeviceAndSwapChain(
+		NULL,
+		D3D_DRIVER_TYPE_HARDWARE,
+		NULL,
+		NULL,
+		NULL,
+		0,
+		D3D11_SDK_VERSION,
+		&scd,
+		gspSwapChain.ReleaseAndGetAddressOf(),
+		gspDevice.ReleaseAndGetAddressOf(),
+		NULL,
+		gspDeviceContext.ReleaseAndGetAddressOf()
+	);
+
+	// 렌더타겟
+	gspSwapChain->GetBuffer(
+		0, 
+		IID_PPV_ARGS(gspRenderTarget.ReleaseAndGetAddressOf())
+	);
+	gspDevice->CreateRenderTargetView(
+		gspRenderTarget.Get(),
+		nullptr,
+		gspRenderTargetView.ReleaseAndGetAddressOf()
+	);
+
+	// 깊이-스텐실
+	CD3D11_TEXTURE2D_DESC dtd(
+		DXGI_FORMAT_D24_UNORM_S8_UINT,
+		WINDOW_WIDTH, WINDOW_HEIGHT,
+		1,
+		1,
+		D3D11_BIND_DEPTH_STENCIL
+	);
+
+	gspDevice->CreateTexture2D(
+		&dtd,
+		nullptr,
+		gspDepthStencil.ReleaseAndGetAddressOf()
+	);
+
+	CD3D11_DEPTH_STENCIL_VIEW_DESC dsvd(
+		D3D11_DSV_DIMENSION_TEXTURE2D
+	);
+
+	gspDevice->CreateDepthStencilView(
+		gspDepthStencil.Get(),
+		&dsvd,
+		gspDepthStencilView.ReleaseAndGetAddressOf()
+	);
+
+	// 파이프라인
+	gspDeviceContext->OMSetRenderTargets(
+		1,
+		gspRenderTargetView.GetAddressOf(),
+		gspDepthStencilView.Get()
+	);
+
+	// 뷰포트(View-Port)
+	CD3D11_VIEWPORT viewport(
+		0.0f, 
+		0.0f, 
+		static_cast<float>(WINDOW_WIDTH), 
+		static_cast<float>(WINDOW_HEIGHT)
+	);
+
+	gspDeviceContext->RSSetViewports(1, &viewport);
+
+}
+
+void RenderFrame()
 {
 }
 
