@@ -18,8 +18,8 @@
 
 const std::wstring gClassName{ L"MyWindowClass" };
 const std::wstring gTitle{ L"Direct3D Example" };
-const int WINDOW_WIDTH{ 800 };
-const int WINDOW_HEIGHT{ 600 };
+int gScreenWidth{ 800 };
+int gScreenHeight{ 600 };
 
 HWND gHwnd{};
 HINSTANCE gInstance{};
@@ -37,6 +37,7 @@ ComPtr<ID3D11DepthStencilView>		gspDepthStencilView{};
 
 
 void InitD3D();
+void OnResize();
 void RenderFrame();
 void ReleaseD3D();
 
@@ -66,7 +67,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		return 0;
 	}
 
-	RECT wr{ 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+	RECT wr{ 0, 0, gScreenWidth, gScreenHeight };
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
 
 	gHwnd = CreateWindowEx(
@@ -118,6 +119,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		}
 	}
 
+	
 	ReleaseD3D();
 
 	return static_cast<int>(msg.wParam);
@@ -133,10 +135,13 @@ void InitD3D()
 	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 	scd.BufferCount = 1; // ¹é¹öÆÛ °¹¼ö
 	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	scd.BufferDesc.Width = gScreenWidth;
+	scd.BufferDesc.Height = gScreenHeight;
 	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	scd.OutputWindow = gHwnd;
 	scd.Windowed = TRUE;
 	scd.SampleDesc.Count = 1;
+	scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 
 	D3D11CreateDeviceAndSwapChain(
@@ -154,9 +159,34 @@ void InitD3D()
 		gspDeviceContext.ReleaseAndGetAddressOf()
 	);
 
+	OnResize();
+}
+
+void OnResize()
+{
+	///////////////////////////////////////////////////////
+
+	ID3D11RenderTargetView* nullViews[]{ nullptr };
+	gspDeviceContext->OMSetRenderTargets(
+		_countof(nullViews),
+		nullViews,
+		nullptr
+		);
+
+	gspRenderTargetView.Reset();
+	gspDepthStencilView.Reset();
+	gspRenderTarget.Reset();
+	gspDepthStencilView.Reset();
+
+	gspDeviceContext->Flush();
+
+	///////////////////////////////////////////////////////
+
+	gspSwapChain->ResizeBuffers(0, gScreenWidth, gScreenHeight, DXGI_FORMAT_UNKNOWN, 0);
+
 	// ·»´õÅ¸°Ù
 	gspSwapChain->GetBuffer(
-		0, 
+		0,
 		IID_PPV_ARGS(gspRenderTarget.ReleaseAndGetAddressOf())
 	);
 	gspDevice->CreateRenderTargetView(
@@ -168,7 +198,7 @@ void InitD3D()
 	// ±íÀÌ-½ºÅÙ½Ç
 	CD3D11_TEXTURE2D_DESC dtd(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
-		WINDOW_WIDTH, WINDOW_HEIGHT,
+		gScreenWidth, gScreenHeight,
 		1,
 		1,
 		D3D11_BIND_DEPTH_STENCIL
@@ -199,22 +229,44 @@ void InitD3D()
 
 	// ºäÆ÷Æ®(View-Port)
 	CD3D11_VIEWPORT viewport(
-		0.0f, 
-		0.0f, 
-		static_cast<float>(WINDOW_WIDTH), 
-		static_cast<float>(WINDOW_HEIGHT)
+		0.0f,
+		0.0f,
+		static_cast<float>(gScreenWidth),
+		static_cast<float>(gScreenHeight)
 	);
 
 	gspDeviceContext->RSSetViewports(1, &viewport);
-
 }
 
 void RenderFrame()
 {
+	float clear_color[]{ 0.0f, 0.2f, 0.4f, 1.0f };
+	gspDeviceContext->ClearRenderTargetView(
+		gspRenderTargetView.Get(),
+		clear_color
+	);
+	gspDeviceContext->ClearDepthStencilView(
+			gspDepthStencilView.Get(),
+			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
+			1.0f,
+			0
+		);
+
+	// ±×¸®±â
+	// vertical sync
+	gspSwapChain->Present(0, 0);
+
 }
 
 void ReleaseD3D()
 {
+	gspSwapChain->SetFullscreenState(FALSE, nullptr); // Ã¢¸ðµå
+
+	gspDepthStencilView.Reset();
+	gspDepthStencil.Reset();
+	gspRenderTargetView.Reset();
+	gspRenderTarget.Reset();
+
 	gspSwapChain.Reset();
 	gspDevice.Reset();
 	gspDeviceContext.Reset();
