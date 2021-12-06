@@ -2,7 +2,7 @@
 
 #pragma comment (lib, "d3d11.lib")
 
-void D3DFramework::Initalize(HINSTANCE hInstance, int width, int height)
+void D3DFramework::Initialize(HINSTANCE hInstance, int width, int height)
 {
 	mScreenWidth = width;
 	mScreenHeight = height;
@@ -194,11 +194,13 @@ void D3DFramework::RenderFrame()
 	);
 
 	// 그리기
+	Render();
+
 	// vertical sync
 	mspSwapChain->Present(0, 0);
 }
 
-void D3DFramework::ReleaseD3D()
+void D3DFramework::Destroy()
 {
 	mspSwapChain->SetFullscreenState(FALSE, nullptr); // 창모드
 

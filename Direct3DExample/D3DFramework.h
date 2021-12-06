@@ -50,12 +50,13 @@ protected:
 
 
 public:
-	virtual void Initalize(HINSTANCE hInstance,
+	virtual void Initialize(HINSTANCE hInstance,
 		int width = 800,
 		int height = 600
 	);
-	virtual void ReleaseD3D();
+	virtual void Destroy();
 	virtual void GameLoop();
+	virtual void Render() = 0;
 
 public:
 	LRESULT CALLBACK MessageHandle(HWND hwnd, UINT message,

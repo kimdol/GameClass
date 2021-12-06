@@ -12,5 +12,5 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
 	myFramework.GameLoop();
 
-	myFramework.ReleaseD3D();
+	myFramework.Destroy();
 }
