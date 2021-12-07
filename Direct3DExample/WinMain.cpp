@@ -1,4 +1,4 @@
-#include "D3DFramework.h"
+#include "DrawTriangle.h"
 
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance,
@@ -6,9 +6,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 	_In_ LPSTR lpCmdLine,
 	_In_ int nShowCmd)
 {
-	D3DFramework myFramework;
+	DrawTriangle myFramework;
 
-	myFramework.Initalize(hInstance);
+	myFramework.Initialize(hInstance);
 
 	myFramework.GameLoop();
 

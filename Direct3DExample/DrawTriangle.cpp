@@ -3,28 +3,54 @@
 
 void DrawTriangle::Initialize(HINSTANCE hInstance, int width, int height)
 {
+	D3DFramework::Initialize(hInstance, width, height);
+
+	InitPipeline();
+	InitTriangle();
 }
 
 void DrawTriangle::Destroy()
 {
+	mspVertexBuffer.Reset();
+	mspInputLayout.Reset();
+	mspPixelShader.Reset();
+	mspVertexBuffer.Reset();
+
+	D3DFramework::Destroy();
 }
 
 void DrawTriangle::Render()
 {
+	UINT offset = 0;
+	UINT stride = sizeof(VERTEX);
+	mspDeviceContext->IASetVertexBuffers(
+		0, 1, mspVertexBuffer.GetAddressOf(), &stride, &offset
+	);
+	
+	mspDeviceContext->IASetPrimitiveTopology(
+		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
+	);
+
+	mspDeviceContext->Draw(4, 0);
 }
 
 void DrawTriangle::InitTriangle()
 {
 	VERTEX vertices[]
 	{
-		{ 0.0f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f} },
-		{ 0.45f, -0.5f, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f} },
-		{ -0.45f, -0.5f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f} }
+		/*{ -0.45f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f} },
+		{ 0.45f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f} },
+		{ -0.45f, -0.5f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f} },
+		{ 0.45f, -0.5f, 0.0f, {0.0f, 1.0f, 1.0f, 1.0f} },*/
+		{ 0.45f, -0.5f, 0.0f, {0.0f, 1.0f, 1.0f, 1.0f} },
+		{ -0.45f, -0.5f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f} },
+		{ 0.45f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f} },
+		{ -0.45f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f} }
 	};
 
 	// 버텍스 버퍼
 	CD3D11_BUFFER_DESC bd(
-		sizeof(VERTEX) * 3,
+		sizeof(vertices),
 		D3D11_BIND_VERTEX_BUFFER,
 		D3D11_USAGE_DYNAMIC,	// GPU 읽기, CPU 쓰기
 		D3D11_CPU_ACCESS_WRITE
@@ -93,11 +119,34 @@ void DrawTriangle::InitPipeline()
 	// IA
 	D3D11_INPUT_ELEMENT_DESC ied[]
 	{
-		{ "POSITION", 0,  },
-		{}
+		{ "POSITION", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 
+			0, // Slot Number
+			0, // Offset
+			D3D11_INPUT_PER_VERTEX_DATA, // Slot Classification
+			0 // Instancing
+		},
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,
+			0,
+			12,
+			D3D11_INPUT_PER_VERTEX_DATA,
+			0
+		}
 	};
+
+	mspDevice->CreateInputLayout(
+		ied,
+		2,
+		spVS->GetBufferPointer(),
+		spVS->GetBufferSize(),
+		mspInputLayout.ReleaseAndGetAddressOf()
+	);
+
+
 	// 파이프라인 조립
 		// Input Assempler(IA)
 		// VS
 		// PS
+	mspDeviceContext->IASetInputLayout(mspInputLayout.Get());
+	mspDeviceContext->VSSetShader(mspVertexShader.Get(), nullptr, 0);
+	mspDeviceContext->PSSetShader(mspPixelShader.Get(), nullptr, 0);
 }
