@@ -1,11 +1,5 @@
 Texture2D shaderTexture;
-
-SamplerState Sampler
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
-};
+SamplerState Sampler;
 
 
 struct PIn
