@@ -15,6 +15,8 @@
 #include <wrl/client.h>
 #include <d3d11.h>
 
+#include "Timer.h"
+
 class D3DFramework
 {
 private:
@@ -27,6 +29,10 @@ protected:
 	bool mMinimized{ false };
 	bool mMaximized{ false };
 	bool mResizing{ false };
+	bool mPaused{ false };
+
+	std::wstring mTitleText{};
+	MyUtil::Timer mTimer;
 
 	HWND mHwnd{};
 	HINSTANCE mInstance{};
@@ -43,11 +49,13 @@ protected:
 private:
 	void InitWindow(HINSTANCE hInstance);
 	void InitD3D();
+	void CalculateFPS();
 
 protected:
 	void OnResize();
 	void RenderFrame();
-
+	virtual void Render() {};
+	virtual void Update(float delta) {};
 
 public:
 	virtual void Initialize(HINSTANCE hInstance,
@@ -56,12 +64,13 @@ public:
 	);
 	virtual void Destroy();
 	virtual void GameLoop();
-	virtual void Render() = 0;
 
 public:
 	LRESULT CALLBACK MessageHandle(HWND hwnd, UINT message,
 		WPARAM wparam, LPARAM lparam);
-	static LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
+	
 
 };
+
+static LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 
