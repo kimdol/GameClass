@@ -1,3 +1,8 @@
+cbuffer MatrixBuffer
+{
+	matrix worldMatrix;	// set transform
+};
+
 struct Vout
 {
 	float4 position : SV_POSITION;
@@ -8,7 +13,7 @@ Vout main( float4 pos : POSITION, float4 tex : TEXCOORD0 )
 {
 	Vout output;
 
-	output.position = pos;
+	output.position = nul(pos, worldMatrix);
 	output.tex = tex;
 
 	return output;

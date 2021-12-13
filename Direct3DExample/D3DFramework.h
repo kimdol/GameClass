@@ -17,6 +17,8 @@
 
 #include "Timer.h"
 
+#include "Input.h"
+
 class D3DFramework
 {
 private:
@@ -33,6 +35,7 @@ protected:
 
 	std::wstring mTitleText{};
 	MyUtil::Timer mTimer;
+	MyUtil::Input mInput;
 
 	HWND mHwnd{};
 	HINSTANCE mInstance{};
