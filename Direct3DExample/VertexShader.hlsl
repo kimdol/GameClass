@@ -1,4 +1,4 @@
-cbuffer MatrixBuffer
+cbuffer MatrixBuffer // 상수버퍼
 {
 	matrix worldMatrix;	// set transform
 };
@@ -13,7 +13,7 @@ Vout main( float4 pos : POSITION, float4 tex : TEXCOORD0 )
 {
 	Vout output;
 
-	output.position = nul(pos, worldMatrix);
+	output.position = mul(pos, worldMatrix); // 열기준
 	output.tex = tex;
 
 	return output;
