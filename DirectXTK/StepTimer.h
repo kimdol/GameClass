@@ -147,12 +147,12 @@ namespace DX
 
 				update();
 			}
-
+			// 가변프레임을 위함
 			if (m_frameCount != lastFrameCount)
 			{
 				m_framesThisSecond++;
 			}
-			if (m_qpcSecondCounter >= static_cast<uint64_t>(m_qpcFrequency.QuadPart))
+			if (m_qpcSecondCounter >= static_cast<uint64_t>(m_qpcFrequency.QuadPart))	// hz, 1초가 지났음을 의미함
 			{
 				m_framesPerSecond = m_framesThisSecond;
 				m_framesThisSecond = 0;
