@@ -147,7 +147,7 @@ namespace DX
 
 				update();
 			}
-			// 가변프레임을 위함
+			// 1초에 몇 프레임인지 세려는 것
 			if (m_frameCount != lastFrameCount)
 			{
 				m_framesThisSecond++;
