@@ -30,6 +30,7 @@ namespace DX
 		DXGI_FORMAT				m_backBufferFormat;
 		DXGI_FORMAT				m_depthBufferFormat;
 		UINT					m_backBufferCount;
+		D3D_FEATURE_LEVEL		m_d3dMinFeatureLevel;
 
 		HWND					m_window;
 		D3D_FEATURE_LEVEL		m_d3dFeatureLevel;
@@ -51,7 +52,13 @@ namespace DX
 		void UpdateColorSpace();
 
 	public:
-		DeviceResources();
+		DeviceResources (
+			DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM,
+			DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT,
+			UINT backBufferCount = 2,
+			D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_10_0,
+			unsigned int flags = c_FlipPresent
+		) noexcept;
 		~DeviceResources() = default;	// 숨기는 이유는 스마트 포인터를 쓰겠다는 뜻
 	
 		DeviceResources(DeviceResources&&) = default;	// 이동생성자
