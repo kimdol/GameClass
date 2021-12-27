@@ -33,7 +33,7 @@ public:
     void OnSuspending();
     void OnResuming();
     void OnWindowMoved();
-    void OnWindowSizeChanged(int width, int& height);
+    void OnWindowSizeChanged(int width, int height);
 
     void GetDefaultSize(int& width, int& height) const noexcept;
 

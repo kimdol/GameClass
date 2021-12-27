@@ -442,10 +442,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
 		static_cast<UINT>(m_outputSize.bottom - m_outputSize.top),
 		1u
 	);
-	const DXGI_FORMAT backBufferFormat{
+	const DXGI_FORMAT backBufferFormat =
 		(m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ?
-		NoSRGB(m_backBufferFormat) : m_backBufferFormat
-	};
+		NoSRGB(m_backBufferFormat) : m_backBufferFormat;
 
 	if (m_swapChain)
 	{
@@ -485,7 +484,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
 		ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC1));
 		swapChainDesc.Width = backBufferWidth;
 		swapChainDesc.Width = backBufferHeight;
-		swapChainDesc.Width = backBufferFormat;
+		swapChainDesc.Format = backBufferFormat;
 		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		swapChainDesc.BufferCount = m_backBufferCount;
 		swapChainDesc.SampleDesc.Count = 1;
@@ -494,7 +493,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
 		swapChainDesc.SwapEffect = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ?
 			DXGI_SWAP_EFFECT_FLIP_DISCARD : DXGI_SWAP_EFFECT_DISCARD;
 		swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
-		swapChainDesc.Flags = (m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u;
+		swapChainDesc.Flags = 
+			(m_options & c_AllowTearing) ? 
+			DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u;
 
 		DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc{};
 		ZeroMemory(&fsSwapChainDesc, sizeof(DXGI_SWAP_CHAIN_FULLSCREEN_DESC));

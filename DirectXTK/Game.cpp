@@ -82,7 +82,7 @@ void Game::OnWindowMoved()
 	m_deviceResources->WindowSizeChanged(r.right, r.bottom);
 }
 
-void Game::OnWindowSizeChanged(int width, int& height)
+void Game::OnWindowSizeChanged(int width, int height)
 {
 	if (!m_deviceResources->WindowSizeChanged(width, height))
 	{
