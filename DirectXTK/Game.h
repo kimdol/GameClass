@@ -1,6 +1,7 @@
 #pragma once
 #include "DeviceResources.h"
 #include "StepTimer.h"
+#include <array>
 
 class Game final :
     public DX::IDeviceNotify
@@ -10,6 +11,14 @@ private:
     DX::StepTimer                           m_timer;
     std::unique_ptr<DirectX::Keyboard>      m_keyboard;
     std::unique_ptr<DirectX::Mouse>         m_mouse;
+
+    std::unique_ptr<DirectX::SpriteBatch>       m_spriteBatch;
+    std::unique_ptr<DirectX::CommonStates>      m_commonStates;
+
+    std::array<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>, 10> m_textures;
+
+    int m_currentFrame;
+    double m_timeToNextFrame;
 
 public:
     Game() noexcept(false);

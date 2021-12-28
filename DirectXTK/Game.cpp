@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Game.h"
+#include <sstream>
+#include <iomanip>
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
@@ -12,6 +14,9 @@ Game::Game() noexcept(false)
 {
 	m_deviceResources = std::make_unique<DX::DeviceResources>();
 	m_deviceResources->RegisterDeviceNotify(this);
+
+	m_currentFrame = 0;
+	m_timeToNextFrame = 0.1f;
 }
 
 Game::~Game()
@@ -52,6 +57,13 @@ void Game::Update(DX::StepTimer const& timer)
 	if (kb.Escape)
 	{
 		ExitGame();
+	}
+
+	m_timeToNextFrame -= timer.GetElapsedSeconds();
+	if (m_timeToNextFrame < 0.0f)
+	{
+		m_timeToNextFrame = 0.1f;
+		m_currentFrame = (m_currentFrame + 1) % static_cast<int>(m_textures.size());
 	}
 }
 
@@ -113,7 +125,17 @@ void Game::Render()
 	Clear();
 
 	m_deviceResources->PIXBeginEvent(L"Render");
+
 	// Draw
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
+
+	m_spriteBatch->Draw(
+		m_textures[m_currentFrame].Get(),
+		XMFLOAT2(0, 0)
+	);
+
+	m_spriteBatch->End();
+	// Draw End
 
 	m_deviceResources->PIXEndEvent();
 
@@ -143,6 +165,26 @@ void Game::Clear()
 #pragma region Direct3D Resources
 void Game::CreateDeviceDependentResources()
 {
+	auto device = m_deviceResources->GetD3DDevice();
+	auto context = m_deviceResources->GetD3DDeviceContext();
+
+	m_commonStates = std::make_unique<CommonStates>(device);
+	m_spriteBatch = std::make_unique<SpriteBatch>(context);
+
+	std::wstringstream fileName;
+	for (int i = 0; i < 10; i++)
+	{
+		fileName.str(L"");
+		fileName << L"Assets/die" << std::setfill(L'0') << 
+			std::setw(2) << i + 1 << L".png";
+
+		DX::ThrowIfFailed(CreateWICTextureFromFile(
+			device,
+			fileName.str().c_str(),
+			nullptr,
+			m_textures[i].ReleaseAndGetAddressOf()
+		));
+	}
 }
 
 void Game::CreateWindowSizeDependentResources()
@@ -151,6 +193,12 @@ void Game::CreateWindowSizeDependentResources()
 
 void Game::OnDeviceLost()
 {
+	for (auto& tex : m_textures)
+	{
+		tex.Reset();
+	}
+	m_spriteBatch.reset();
+	m_commonStates.reset();
 }
 
 void Game::OnDeviceRestored()
