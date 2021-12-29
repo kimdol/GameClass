@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Game.h"
-#include <sstream>
 #include <iomanip>
 
 using Microsoft::WRL::ComPtr;
@@ -37,6 +36,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_deviceResources->CreateWindowSizeDependentResources();
 	CreateWindowSizeDependentResources();
+
+	LoadSpriteSheetFromJSON();
 }
 #pragma region Frame Update
 
@@ -51,6 +52,34 @@ void Game::Tick()
 	Render();
 }
 
+void Game::LoadSpriteSheetFromJSON()
+{
+	m_rects.clear();
+
+	std::wifstream file(L"Assets/sprites.json", std::wifstream::binary);
+	std::wstringstream stream;
+
+	stream << file.rdbuf();
+
+	file.close();
+
+	rapidjson::GenericDocument<rapidjson::UTF16<>> doc;
+	doc.Parse(stream.str().c_str());
+
+	auto frames = doc[L"frames"].GetArray();
+	for (auto& e : frames)
+	{
+		RECT rct{};
+		auto obj = e[L"frame"].GetObject();
+		rct.left = obj[L"x"].GetInt();
+		rct.top = obj[L"y"].GetInt();
+		rct.right = rct.left + obj[L"w"].GetInt();
+		rct.bottom = rct.top + obj[L"h"].GetInt();
+
+		m_rects.push_back(rct);
+	}
+}
+
 void Game::Update(DX::StepTimer const& timer)
 {
 	auto kb = m_keyboard->GetState();
@@ -63,7 +92,7 @@ void Game::Update(DX::StepTimer const& timer)
 	if (m_timeToNextFrame < 0.0f)
 	{
 		m_timeToNextFrame = 0.1f;
-		m_currentFrame = (m_currentFrame + 1) % static_cast<int>(m_textures.size());
+		m_currentFrame = (m_currentFrame + 1) % 10;
 	}
 }
 
@@ -129,10 +158,11 @@ void Game::Render()
 	// Draw
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
 
-	m_spriteBatch->Draw(
-		m_textures[m_currentFrame].Get(),
-		XMFLOAT2(0, 0)
-	);
+	m_spriteBatch->Draw(m_texture.Get(), XMFLOAT2{ 0.0f, 0.0f },
+		&m_rects[m_currentFrame]);
+
+	m_spriteBatch->Draw(m_texture.Get(), XMFLOAT2{ 30.0f, 30.0f },
+		&m_rects[m_currentFrame]);
 
 	m_spriteBatch->End();
 	// Draw End
@@ -171,20 +201,9 @@ void Game::CreateDeviceDependentResources()
 	m_commonStates = std::make_unique<CommonStates>(device);
 	m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
-	std::wstringstream fileName;
-	for (int i = 0; i < 10; i++)
-	{
-		fileName.str(L"");
-		fileName << L"Assets/die" << std::setfill(L'0') << 
-			std::setw(2) << i + 1 << L".png";
+	CreateWICTextureFromFile(device, L"Assets/sprites.png",
+		nullptr, m_texture.ReleaseAndGetAddressOf());
 
-		DX::ThrowIfFailed(CreateWICTextureFromFile(
-			device,
-			fileName.str().c_str(),
-			nullptr,
-			m_textures[i].ReleaseAndGetAddressOf()
-		));
-	}
 }
 
 void Game::CreateWindowSizeDependentResources()
@@ -193,10 +212,8 @@ void Game::CreateWindowSizeDependentResources()
 
 void Game::OnDeviceLost()
 {
-	for (auto& tex : m_textures)
-	{
-		tex.Reset();
-	}
+	m_texture.Reset();
+
 	m_spriteBatch.reset();
 	m_commonStates.reset();
 }

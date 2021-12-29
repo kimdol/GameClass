@@ -1,7 +1,21 @@
 #pragma once
+#include <vector>
+
+#include <fstream>
+#include <sstream>
+
 #include "DeviceResources.h"
 #include "StepTimer.h"
-#include <array>
+
+#pragma warning(push)
+#pragma warning(disable:26812)
+#pragma warning(disable:26451)
+#pragma warning(disable:26495)
+#pragma warning(disable:6319)
+#pragma warning(disable:6386)
+#pragma warning(disable:6385)
+#include "rapidjson//document.h"
+#pragma warning(pop)
 
 class Game final :
     public DX::IDeviceNotify
@@ -15,10 +29,13 @@ private:
     std::unique_ptr<DirectX::SpriteBatch>       m_spriteBatch;
     std::unique_ptr<DirectX::CommonStates>      m_commonStates;
 
-    std::array<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>, 10> m_textures;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
     int m_currentFrame;
     double m_timeToNextFrame;
+
+    std::vector<RECT> m_rects;
+
 
 public:
     Game() noexcept(false);
@@ -47,6 +64,8 @@ public:
     void GetDefaultSize(int& width, int& height) const noexcept;
 
 private:
+    void LoadSpriteSheetFromJSON();
+
     void Update(DX::StepTimer const& timer);
     void Render();
 
