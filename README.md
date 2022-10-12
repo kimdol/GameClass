@@ -1,8 +1,8 @@
-# C++
-### <프로젝트 목차>
-1. C++ 언어 기초, 고급
-2. C++ 자료구조, 알고리즘
-3. C++ STL
-4. Window 프로그래밍
-4. Direct 2D, 3D
-5. Direct 프레임워크
+# C++ Study
+- C++ 언어 기초와 고급 ( Ex1_1 ~ Ex15_1,
+Tower_of_Hanoi, DynamicList, Chuseok_class, stl_ex1, Ctnr_stdt, CodingTest2 )
+- XML ( XMLParser )
+- Json ( Character_Set )
+- Windows 프로그래밍 ( SimpleWindow )
+- 카드 게임 ( Solitaire, RandomFunc )
+- DirectX ( Direct2D_1, BITMAP, ImageEx1, BuggHouse, Direct3DExample, DirectXTK )
