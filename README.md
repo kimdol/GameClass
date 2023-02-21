@@ -9,7 +9,7 @@ Tower_of_Hanoi, DynamicList, Chuseok_class, stl_ex1, Ctnr_stdt, CodingTest2 )
 - Windows 프로그래밍 ( SimpleWindow )
 
 - 카드 짝 맞추기 게임 ( Solitaire, RandomFunc )
-<img src="Solitaire/Thumbnail/Solitaire_01.png" alt="Solitaire_01" height="200">
+<img src="Solitaire/Thumbnail/Solitaire_01.png" alt="Solitaire_01" height="600">
 <img src="Solitaire/Thumbnail/Solitaire_02.png" alt="Solitaire_02" height="200">
 <img src="Solitaire/Thumbnail/Solitaire_03.png" alt="Solitaire_03" height="200">
 
